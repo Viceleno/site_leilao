@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Usuário - Site de Leilões</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">Site de Leilões</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="usuario.html">Registrar Usuário</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="criar_item.html">Criar Item</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="criar_leilao.html">Criar Leilão</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="lance.html">Fazer Lance</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="form-section mt-5">
+      <h2>Criar Item</h2>
+      <form id="itemForm" class="needs-validation" novalidate>
+        <div class="form-group">
+          <label for="user_id">ID do Usuário:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="user_id"
+            name="user_id"
+            required
+          />
+          <div class="invalid-feedback">
+            Por favor, forneça um ID de usuário.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Nome do Item:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            required
+          />
+          <div class="invalid-feedback">
+            Por favor, forneça um nome para o item.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição:</label>
+          <textarea
+            class="form-control"
+            id="description"
+            name="description"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="starting_bid">Lance Inicial:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="starting_bid"
+            name="starting_bid"
+            step="0.01"
+            required
+          />
+          <div class="invalid-feedback">
+            Por favor, forneça um lance inicial.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Criar Item</button>
+      </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts.js"></script>
+  </body>
+</html>
