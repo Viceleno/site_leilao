@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registrar Usuário - Site de Leilões</title>
+    <title>Detalhes do Leilão - Site de Leilões</title>
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
@@ -31,7 +32,7 @@
           <li class="nav-item">
             <a class="nav-link" href="index.html">Home</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="usuario.html">Registrar Usuário</a>
           </li>
           <li class="nav-item">
@@ -47,221 +48,25 @@
       </div>
     </nav>
     <div class="container mt-5">
-      <h1 class="text-center">Site de Leilões</h1>
-
-      <!-- Formulário de Registro de Usuário -->
-      <div class="form-section mt-5">
-        <h2>Registrar Usuário</h2>
-        <form id="userForm" class="needs-validation" novalidate>
-          <div class="form-group">
-            <label for="username">Nome de Usuário:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="username"
-              name="username"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um nome de usuário.
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="password">Senha:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              required
-            />
-            <div class="invalid-feedback">Por favor, forneça uma senha.</div>
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um email válido.
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Registrar</button>
-        </form>
-      </div>
-
-      <!-- Formulário de Criação de Item -->
-      <div class="form-section mt-5">
-        <h2>Criar Item</h2>
-        <form id="itemForm" class="needs-validation" novalidate>
-          <div class="form-group">
-            <label for="user_id">ID do Usuário:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="user_id"
-              name="user_id"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um ID de usuário.
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="name">Nome do Item:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              name="name"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um nome para o item.
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="description">Descrição:</label>
-            <textarea
-              class="form-control"
-              id="description"
-              name="description"
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="starting_bid">Lance Inicial:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="starting_bid"
-              name="starting_bid"
-              step="0.01"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um lance inicial.
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Criar Item</button>
-        </form>
-      </div>
-
-      <!-- Formulário de Criação de Leilão -->
-      <div class="form-section mt-5">
-        <h2>Criar Leilão</h2>
-        <form id="auctionForm" class="needs-validation" novalidate>
-          <div class="form-group">
-            <label for="item_id">ID do Item:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="item_id"
-              name="item_id"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um ID de item.
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="start_time">Data e Hora de Início:</label>
-            <input
-              type="datetime-local"
-              class="form-control"
-              id="start_time"
-              name="start_time"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça a data e hora de início.
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="end_time">Data e Hora de Término:</label>
-            <input
-              type="datetime-local"
-              class="form-control"
-              id="end_time"
-              name="end_time"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça a data e hora de término.
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Criar Leilão</button>
-        </form>
-      </div>
-
-      <!-- Formulário de Realização de Lance -->
-      <div class="form-section mt-5">
-        <h2>Fazer Lance</h2>
-        <form id="bidForm" class="needs-validation" novalidate>
-          <div class="form-group">
-            <label for="auction_id">ID do Leilão:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="auction_id"
-              name="auction_id"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um ID de leilão.
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="user_id_bid">ID do Usuário:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="user_id_bid"
-              name="user_id_bid"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um ID de usuário.
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="bid_amount">Valor do Lance:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="bid_amount"
-              name="bid_amount"
-              step="0.01"
-              required
-            />
-            <div class="invalid-feedback">
-              Por favor, forneça um valor para o lance.
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Fazer Lance</button>
-        </form>
+      <h1 class="text-center">Detalhes do Leilão</h1>
+      <div class="card">
+        <div class="card-header">
+          Informações do Leilão
+        </div>
+        <div class="card-body">
+          <h5 class="card-title" id="auction-title">Título do Leilão</h5>
+          <p class="card-text" id="auction-description">Descrição detalhada do leilão.</p>
+          <p class="card-text"><strong>Data de Início:</strong> <span id="auction-start-date">01/01/2023</span></p>
+          <p class="card-text"><strong>Data de Término:</strong> <span id="auction-end-date">01/01/2024</span></p>
+          <h5 class="card-title mt-4">Itens do Leilão</h5>
+          <ul class="list-group" id="auction-items">
+            <!-- Lista de itens do leilão -->
+            <li class="list-group-item">Item 1: Descrição do item 1</li>
+            <li class="list-group-item">Item 2: Descrição do item 2</li>
+            <!-- Adicione mais itens conforme necessário -->
+          </ul>
+        </div>
       </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="scripts.js"></script>
   </body>
 </html>
