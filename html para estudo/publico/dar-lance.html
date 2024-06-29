@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dar Lance</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Dar Lance</h1>
+        <form id="form-lance">
+            <div class="form-group">
+                <label for="leilao_id">Leilão</label>
+                <select class="form-control" id="leilao_id" required>
+                    <!-- Opções serão preenchidas dinamicamente -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="usuario_id">Usuário</label>
+                <select class="form-control" id="usuario_id" required>
+                    <!-- Opções serão preenchidas dinamicamente -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="valor_lance">Valor do Lance</label>
+                <input type="number" class="form-control" id="valor_lance" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Dar Lance</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Preencher opções de leilões
+            $.get('/leiloes', function(data) {
+                data.forEach(function(leilao) {
+                    $('#leilao_id').append(new Option('Leilão ' + leilao.leilao_id, leilao.leilao_id));
+                });
+            });
+
+            // Preencher opções de usuários
+            $.get('/usuarios', function(data) {
+                data.forEach(function(usuario) {
+                    $('#usuario_id').append(new Option(usuario.nome_usuario, usuario.usuario_id));
+                });
+            });
+
+            // Processar o formulário de lance
+            $('#form-lance').on('submit', function(event) {
+                event.preventDefault();
+                const formData = {
+                    leilao_id: $('#leilao_id').val(),
+                    usuario_id: $('#usuario_id').val(),
+                    valor_lance: $('#valor_lance').val()
+                };
+                $.post('/lances', formData, function(data) {
+                    alert('Lance dado com sucesso!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

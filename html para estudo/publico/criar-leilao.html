@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Leilão</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Criar Leilão</h1>
+        <form id="form-leilao">
+            <div class="form-group">
+                <label for="item_id">Item</label>
+                <select class="form-control" id="item_id" required>
+                    <!-- Opções serão preenchidas dinamicamente -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inicio_em">Início</label>
+                <input type="datetime-local" class="form-control" id="inicio_em" required>
+            </div>
+            <div class="form-group">
+                <label for="fim_em">Fim</label>
+                <input type="datetime-local" class="form-control" id="fim_em" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Criar Leilão</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Preencher opções de itens
+            $.get('/itens', function(data) {
+                data.forEach(function(item) {
+                    $('#item_id').append(new Option(item.nome, item.item_id));
+                });
+            });
+
+            // Processar o formulário de leilão
+            $('#form-leilao').on('submit', function(event) {
+                event.preventDefault();
+                const formData = {
+                    item_id: $('#item_id').val(),
+                    inicio_em: $('#inicio_em').val(),
+                    fim_em: $('#fim_em').val()
+                };
+                $.post('/leiloes', formData, function(data) {
+                    alert('Leilão criado com sucesso!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
