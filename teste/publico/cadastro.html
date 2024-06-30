@@ -1,57 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro de Usuário</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
     <div class="container mt-5">
-        <h1 class="text-center">Cadastro de Usuário</h1>
-        <form id="form-cadastro">
-            <div class="form-group">
-                <label for="nome_usuario">Nome de Usuário</label>
-                <input type="text" class="form-control" id="nome_usuario" required>
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha</label>
-                <input type="password" class="form-control" id="senha" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
-        </form>
+      <h1 class="text-center">Cadastro de Usuário</h1>
+      <form id="form-cadastro">
+        <div class="form-group">
+          <label for="nome_usuario">Nome de Usuário</label>
+          <input type="text" class="form-control" id="nome_usuario" required />
+        </div>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" class="form-control" id="senha" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+      </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Processar o formulário de cadastro
-            $('#form-cadastro').on('submit', function(event) {
-                event.preventDefault();
-                const formData = {
-                    nome_usuario: $('#nome_usuario').val(),
-                    senha: $('#senha').val(),
-                    email: $('#email').val()
-                };
-                $.post('/usuarios', formData, function(data, status) {
-                    if (status === 'success') {
-                        alert('Cadastro realizado com sucesso!');
-                        // Após o cadastro, redirecionar para a página de login
-                        window.location.href = '/index.html'; // Exemplo de redirecionamento
-                    } else {
-                        alert('Erro ao cadastrar usuário');
-                    }
-                }).fail(function() {
-                    alert('Erro ao processar o cadastro');
-                });
-            });
+      $(document).ready(function () {
+        // Processar o formulário de cadastro
+        $("#form-cadastro").on("submit", function (event) {
+          event.preventDefault();
+          const formData = {
+            nome_usuario: $("#nome_usuario").val(),
+            senha: $("#senha").val(),
+            email: $("#email").val(),
+          };
+          $.post("/usuarios", formData, function (data, status) {
+            if (status === "success") {
+              alert("Cadastro realizado com sucesso!");
+              // Após o cadastro, redirecionar para a página de login
+              window.location.href = "/index.html"; // Exemplo de redirecionamento
+            } else {
+              alert("Erro ao cadastrar usuário");
+            }
+          }).fail(function () {
+            alert("Erro ao processar o cadastro");
+          });
         });
+      });
     </script>
-</body>
+  </body>
 </html>
