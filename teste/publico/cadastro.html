@@ -43,7 +43,7 @@
         $(document).ready(function () {
             // Redirecionar para a página de login ao clicar no botão "Voltar para Login"
             $("#voltar-login").on("click", function () {
-                window.location.href = "\\teste\\publico\\index.html";
+                window.location.href = ".\\publico\\index.html";
             });
 
             // Processar o formulário de cadastro
@@ -57,12 +57,12 @@
                 $.post("/usuarios", formData, function (data, status) {
                     if (status === "success") {
                         alert("Cadastro realizado com sucesso!");
-                        window.location.href = "/index.html";
+                        window.location.href = ".\\publico\\index.html";
                     } else {
                         $('#cadastroAlert').removeClass('d-none').text("Erro ao cadastrar usuário: " + data.error);
                     }
                 }).fail(function () {
-                    $('#cadastroAlert').removeClass('d-none').text("Erro ao processar o cadastro");
+                    $('#cadastroAlert').removeClass('d-none').text("Falha ao processar o cadastro");
                 });
             });
         });
