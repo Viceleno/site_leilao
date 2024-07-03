@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar Leilão</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">Criar Leilão</h1>
+      <form id="form-criar-leilao">
+        <div class="form-group">
+          <label for="inicio_em">Início</label>
+          <input type="datetime-local" class="form-control" id="inicio_em" required />
+        </div>
+        <div class="form-group">
+          <label for="fim_em">Fim</label>
+          <input type="datetime-local" class="form-control" id="fim_em" required />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-gavel"></i> Criar Leilão
+        </button>
+        <button type="button" class="btn btn-secondary" id="voltar">
+          <i class="fas fa-arrow-left"></i> Voltar
+        </button>
+        <button type="button" class="btn btn-info" id="atualizar-leilao">
+          <i class="fas fa-sync-alt"></i> Atualizar Leilão
+        </button>
+        <button type="button" class="btn btn-danger" id="apagar-leilao">
+          <i class="fas fa-trash-alt"></i> Apagar Leilão
+        </button>
+        <button type="button" class="btn btn-success" id="criar-item">
+          <i class="fas fa-plus"></i> Criar Item
+        </button>
+      </form>
+      <div
+        id="leilaoAlert"
+        class="alert alert-danger mt-3 d-none"
+        role="alert"
+      >
+        Erro ao criar leilão.
+      </div>
+
+      <!-- Exibição da Hora Atual -->
+      <p class="text-center mt-5" id="horaAtual">Carregando...</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Função para obter a hora atual formatada (HH:mm)
+        function getCurrentTime() {
+          const now = new Date();
+          const hours = now.getHours().toString().padStart(2, "0");
+          const minutes = now.getMinutes().toString().padStart(2, "0");
+          return `${hours}:${minutes}`;
+        }
+
+        // Exibir hora atual (apenas hora e minuto)
+        $.get("http://worldtimeapi.org/api/ip", function (data) {
+          const hora = new Date(data.datetime).toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          $("#horaAtual").text("Hora atual: " + hora);
+        });
+
+        // Redirecionar para a página anterior ao clicar no botão "Voltar"
+        $("#voltar").on("click", function () {
+          window.location.href = "\\index.html";
+        });
+
+        // Processar o formulário de criação de leilão
+        $("#form-criar-leilao").on("submit", function (event) {
+          event.preventDefault();
+          const formData = {
+            inicio_em: $("#inicio_em").val(),
+            fim_em: $("#fim_em").val(),
+          };
+          $.post("\\api\\criar-leilao", formData, function (data, status) {
+            if (status === "success") {
+              alert("Leilão criado com sucesso!");
+              window.location.href = "\\index.html";
+            } else {
+              $("#leilaoAlert")
+                .removeClass("d-none")
+                .text("Erro ao criar leilão: " + data.error);
+            }
+          }).fail(function () {
+            $("#leilaoAlert")
+              .removeClass("d-none")
+              .text("Falha ao processar a criação do leilão");
+          });
+        });
+
+        // Função para atualizar leilão
+        $("#atualizar-leilao").on("click", function () {
+          const leilao_id = prompt("Informe o ID do leilão a ser atualizado:");
+          const formData = {
+            inicio_em: $("#inicio_em").val(),
+            fim_em: $("#fim_em").val(),
+          };
+          $.ajax({
+            url: `/api/leiloes/${leilao_id}`,
+            type: "PUT",
+            data: formData,
+            success: function (data) {
+              alert("Leilão atualizado com sucesso!");
+            },
+            error: function (jqXHR) {
+              $("#leilaoAlert")
+                .removeClass("d-none")
+                .text("Erro ao atualizar leilão: " + jqXHR.responseText);
+            },
+          });
+        });
+
+        // Função para apagar leilão
+        $("#apagar-leilao").on("click", function () {
+          const leilao_id = prompt("Informe o ID do leilão a ser apagado:");
+          $.ajax({
+            url: `/api/leiloes/${leilao_id}`,
+            type: "DELETE",
+            success: function (data) {
+              alert("Leilão apagado com sucesso!");
+            },
+            error: function (jqXHR) {
+              $("#leilaoAlert")
+                .removeClass("d-none")
+                .text("Erro ao apagar leilão: " + jqXHR.responseText);
+            },
+          });
+        });
+
+        // Redirecionar para a página de criação de item ao clicar no botão "Criar Item"
+        $("#criar-item").on("click", function () {
+          window.location.href = "\\inserir-item.html";
+        });
+      });
+    </script>
+  </body>
+</html>
