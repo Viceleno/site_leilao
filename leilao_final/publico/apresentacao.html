@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apresentação de Leilões</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mt-5">Apresentação de Leilões</h1>
+
+      <!-- Lista de Leilões -->
+      <div class="card mt-4">
+        <div class="card-header">Leilões Cadastrados</div>
+        <div class="card-body">
+          <ul id="lista-leiloes" class="list-group">
+            <!-- Itens serão preenchidos dinamicamente -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Lista de Itens e Lances -->
+      <div class="card mt-4">
+        <div class="card-header">Itens e Lances</div>
+        <div class="card-body">
+          <ul id="lista-itens-lances" class="list-group">
+            <!-- Itens e Lances serão preenchidos dinamicamente -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Botão Voltar -->
+      <div class="mt-4">
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="window.location.href='/index.html'"
+        >
+          <i class="fas fa-arrow-left"></i> Voltar para Página Principal
+        </button>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Função para carregar a lista de leilões
+        function carregarLeiloes() {
+          $.get("/api/leiloes", function (data) {
+            $("#lista-leiloes").empty();
+            data.forEach(function (leilao) {
+              $("#lista-leiloes").append(
+                `<li class="list-group-item">
+                                <strong>Leilão ID:</strong> ${
+                                  leilao.leilao_id
+                                }<br>
+                                <strong>Item:</strong> ${
+                                  leilao.item_nome || "Nenhum"
+                                }<br>
+                                <strong>Início:</strong> ${new Date(
+                                  leilao.inicio_em
+                                ).toLocaleString()}<br>
+                                <strong>Fim:</strong> ${new Date(
+                                  leilao.fim_em
+                                ).toLocaleString()}<br>
+                                <strong>Lance Atual:</strong> ${leilao.lance_atual.toLocaleString(
+                                  "pt-BR",
+                                  { style: "currency", currency: "BRL" }
+                                )}<br>
+                            </li>`
+              );
+            });
+          }).fail(function (xhr) {
+            console.error(xhr.responseText);
+            alert("Erro ao carregar leilões.");
+          });
+        }
+
+        // Função para carregar a lista de itens e lances
+        function carregarItensLances() {
+          $.get("/api/itens-lances", function (data) {
+            $("#lista-itens-lances").empty();
+            data.forEach(function (item) {
+              $("#lista-itens-lances").append(
+                `<li class="list-group-item">
+                                <strong>Item:</strong> ${item.item_nome}<br>
+                                <strong>Descrição:</strong> ${
+                                  item.descricao
+                                }<br>
+                                <strong>Lance Inicial:</strong> ${item.lance_inicial.toLocaleString(
+                                  "pt-BR",
+                                  { style: "currency", currency: "BRL" }
+                                )}<br>
+                                <strong>Leilão ID:</strong> ${
+                                  item.leilao_id
+                                }<br>
+                                <strong>Leilão Início:</strong> ${new Date(
+                                  item.inicio_em
+                                ).toLocaleString()}<br>
+                                <strong>Leilão Fim:</strong> ${new Date(
+                                  item.fim_em
+                                ).toLocaleString()}<br>
+                                <strong>Lance Atual:</strong> ${item.valor_lance.toLocaleString(
+                                  "pt-BR",
+                                  { style: "currency", currency: "BRL" }
+                                )}<br>
+                            </li>`
+              );
+            });
+          }).fail(function (xhr) {
+            console.error(xhr.responseText);
+            alert("Erro ao carregar itens e lances.");
+          });
+        }
+
+        // Carregar dados ao carregar a página
+        carregarLeiloes();
+        carregarItensLances();
+      });
+    </script>
+  </body>
+</html>

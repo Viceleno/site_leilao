@@ -5,7 +5,7 @@ const url_bd = "postgresql://neondb_owner:ldWIy1eHo7uQ@ep-square-scene-a500isp0.
 const pool = new Pool({
   connectionString: url_bd,
   ssl: {
-    rejectUnauthorized: true,
+    rejectUnauthorized: false, // Alterado para false para evitar problemas com certificados SSL auto-assinados
   },
 });
 

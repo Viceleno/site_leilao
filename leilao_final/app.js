@@ -31,6 +31,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'publico', 'index.html'));
 });
 
+// Middleware de tratamento de erros
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Algo deu errado!');
+});
+
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });

@@ -87,7 +87,7 @@
           $.post("/api/cadastro", formData, function (data, status) {
             if (status === "success") {
               alert("Cadastro realizado com sucesso!");
-              window.location.href = "\\index.html";
+              window.location.href = "/index.html";
             } else {
               $("#cadastroAlert")
                 .removeClass("d-none")

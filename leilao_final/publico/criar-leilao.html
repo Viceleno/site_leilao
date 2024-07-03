@@ -20,11 +20,21 @@
       <form id="form-criar-leilao">
         <div class="form-group">
           <label for="inicio_em">Início</label>
-          <input type="datetime-local" class="form-control" id="inicio_em" required />
+          <input
+            type="datetime-local"
+            class="form-control"
+            id="inicio_em"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="fim_em">Fim</label>
-          <input type="datetime-local" class="form-control" id="fim_em" required />
+          <input
+            type="datetime-local"
+            class="form-control"
+            id="fim_em"
+            required
+          />
         </div>
         <button type="submit" class="btn btn-primary">
           <i class="fas fa-gavel"></i> Criar Leilão
@@ -42,11 +52,7 @@
           <i class="fas fa-plus"></i> Criar Item
         </button>
       </form>
-      <div
-        id="leilaoAlert"
-        class="alert alert-danger mt-3 d-none"
-        role="alert"
-      >
+      <div id="leilaoAlert" class="alert alert-danger mt-3 d-none" role="alert">
         Erro ao criar leilão.
       </div>
 
@@ -78,7 +84,7 @@
 
         // Redirecionar para a página anterior ao clicar no botão "Voltar"
         $("#voltar").on("click", function () {
-          window.location.href = "\\index.html";
+          window.location.href = "/apresentacao.html";
         });
 
         // Processar o formulário de criação de leilão
@@ -88,10 +94,10 @@
             inicio_em: $("#inicio_em").val(),
             fim_em: $("#fim_em").val(),
           };
-          $.post("\\api\\criar-leilao", formData, function (data, status) {
+          $.post("/api/leiloes", formData, function (data, status) {
             if (status === "success") {
               alert("Leilão criado com sucesso!");
-              window.location.href = "\\index.html";
+              window.location.href = "/apresentacao.html";
             } else {
               $("#leilaoAlert")
                 .removeClass("d-none")
@@ -145,7 +151,7 @@
 
         // Redirecionar para a página de criação de item ao clicar no botão "Criar Item"
         $("#criar-item").on("click", function () {
-          window.location.href = "\\inserir-item.html";
+          window.location.href = "/inserir-item.html";
         });
       });
     </script>

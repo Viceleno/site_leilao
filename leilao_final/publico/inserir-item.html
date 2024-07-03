@@ -1,61 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inserir Item no Leilão</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-  </head>
-  <body>
-    <div class="container mt-5">
-      <div class="card mx-auto" style="max-width: 600px">
-        <div class="card-body">
-          <h1 class="text-center">Inserir Item no Leilão</h1>
-          <form id="form-item">
-            <div class="form-group">
-              <label for="leilao_id">Leilão</label>
-              <select class="form-control" id="leilao_id" required>
-                <!-- Opções serão preenchidas dinamicamente -->
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="nome">Nome do Item</label>
-              <input type="text" class="form-control" id="nome" required />
-            </div>
-            <div class="form-group">
-              <label for="descricao">Descrição</label>
-              <textarea class="form-control" id="descricao" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="lance_inicial">Lance Inicial</label>
-              <input
-                type="number"
-                class="form-control"
-                id="lance_inicial"
-                required
-              />
-            </div>
-            <button type="submit" class="btn btn-primary">Inserir Item</button>
-          </form>
-          <div
-            id="itemAlert"
-            class="alert alert-danger mt-3 d-none"
-            role="alert"
-          ></div>
-          <div class="mt-5">
-            <h3 class="text-center">Itens Cadastrados</h3>
-            <ul class="list-group" id="lista-itens">
-              <!-- Itens serão preenchidos dinamicamente -->
-            </ul>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inserir Item no Leilão</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 600px">
+      <div class="card-body">
+        <h1 class="text-center">Inserir Item no Leilão</h1>
+        <form id="form-item">
+          <div class="form-group">
+            <label for="leilao_id">Leilão</label>
+            <select class="form-control" id="leilao_id" required>
+              <!-- Opções serão preenchidas dinamicamente -->
+            </select>
           </div>
-          <!-- Exibição da Hora Atual -->
-          <p class="text-center mt-5" id="horaAtual">Carregando...</p>
+          <div class="form-group">
+            <label for="nome">Nome do Item</label>
+            <input type="text" class="form-control" id="nome" required />
+          </div>
+          <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea class="form-control" id="descricao" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="lance_inicial">Lance Inicial</label>
+            <input type="number" class="form-control" id="lance_inicial" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Inserir Item</button>
+        </form>
+        <div id="itemAlert" class="alert alert-danger mt-3 d-none" role="alert"></div>
+        <div class="mt-5">
+          <h3 class="text-center">Itens Cadastrados</h3>
+          <ul class="list-group" id="lista-itens">
+            <!-- Itens serão preenchidos dinamicamente -->
+          </ul>
         </div>
+        <!-- Exibição da Hora Atual -->
+        <p class="text-center mt-5" id="horaAtual">Carregando...</p>
       </div>
     </div>
+  </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -65,40 +53,38 @@
         // Preencher opções de leilões
         function carregarLeiloes() {
           $("#leilao_id").empty();
-          $.get("/leiloes", function (data) {
+          $.get("/api/leiloes", function (data) {
+            console.log('Dados recebidos do servidor:', data);
             data.forEach(function (leilao) {
-              $("#leilao_id").append(new Option(leilao.nome, leilao.leilao_id));
+              $("#leilao_id").append(new Option(`Leilão ${leilao.leilao_id}`, leilao.leilao_id));
             });
-          });
-        }
-
-        // Obter usuário logado
-        function obterUsuarioLogado() {
-          $.get("/usuario-logado", function (data) {
-            $("#usuario_id").val(data.usuario_id);
+          }).fail(function (jqXHR) {
+            console.error('Erro ao carregar leilões:', jqXHR.responseText);
+            alert("Erro ao carregar leilões: " + jqXHR.responseText);
           });
         }
 
         // Listar itens cadastrados
         function listarItens() {
           $("#lista-itens").empty();
-          $.get("/itens", function (data) {
+          $.get("/api/itens", function (data) {
             data.forEach(function (item) {
               $("#lista-itens").append(`
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${item.nome}
-                                <span>
-                                    <button class="btn btn-warning btn-sm atualizar-item" data-id="${item.item_id}">Atualizar</button>
-                                    <button class="btn btn-danger btn-sm apagar-item" data-id="${item.item_id}">Apagar</button>
-                                </span>
-                            </li>
-                        `);
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                ${item.nome}
+                <span>
+                  <button class="btn btn-warning btn-sm atualizar-item" data-id="${item.item_id}">Atualizar</button>
+                  <button class="btn btn-danger btn-sm apagar-item" data-id="${item.item_id}">Apagar</button>
+                </span>
+              </li>
+            `);
             });
+          }).fail(function () {
+            alert("Erro ao carregar itens.");
           });
         }
 
         carregarLeiloes();
-        obterUsuarioLogado();
         listarItens();
 
         // Processar o formulário de item
@@ -110,7 +96,7 @@
             descricao: $("#descricao").val(),
             lance_inicial: $("#lance_inicial").val(),
           };
-          $.post("/itens", formData, function (data) {
+          $.post("/api/itens", formData, function (data) {
             if (data.success) {
               alert("Item inserido com sucesso!");
               listarItens();
@@ -136,7 +122,7 @@
           );
           if (novoNome && novaDescricao && novoLanceInicial) {
             $.ajax({
-              url: `/itens/${itemId}`,
+              url: `/api/itens/${itemId}`,
               type: "PUT",
               data: {
                 nome: novoNome,
@@ -167,7 +153,7 @@
           const itemId = $(this).data("id");
           if (confirm("Tem certeza que deseja apagar este item?")) {
             $.ajax({
-              url: `/itens/${itemId}`,
+              url: `/api/itens/${itemId}`,
               type: "DELETE",
               success: function (data, status) {
                 if (status === "success") {
