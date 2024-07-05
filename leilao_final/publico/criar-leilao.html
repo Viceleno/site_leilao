@@ -113,10 +113,20 @@
         // Função para atualizar leilão
         $("#atualizar-leilao").on("click", function () {
           const leilao_id = prompt("Informe o ID do leilão a ser atualizado:");
+          const inicio_em = $("#inicio_em").val();
+          const fim_em = $("#fim_em").val();
+
+          // Verifica se os campos de data e hora estão preenchidos
+          if (!inicio_em || !fim_em) {
+            alert("Os campos de Início e Fim devem ser preenchidos.");
+            return;
+          }
+
           const formData = {
-            inicio_em: $("#inicio_em").val(),
-            fim_em: $("#fim_em").val(),
+            inicio_em: inicio_em,
+            fim_em: fim_em,
           };
+
           $.ajax({
             url: `/api/leiloes/${leilao_id}`,
             type: "PUT",

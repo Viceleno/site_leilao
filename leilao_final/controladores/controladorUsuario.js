@@ -34,3 +34,5 @@ exports.loginUsuario = async (req, res) => {
     res.status(500).json({ erro: err.message });
   }
 };
+
+

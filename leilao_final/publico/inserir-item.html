@@ -1,80 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inserir Item no Leilão</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-</head>
-<body>
-  <div class="container mt-5">
-    <div class="card mx-auto" style="max-width: 600px">
-      <div class="card-body">
-        <h1 class="text-center">Inserir Item no Leilão</h1>
-        <form id="form-item">
-          <div class="form-group">
-            <label for="leilao_id">Leilão</label>
-            <select class="form-control" id="leilao_id" required>
-              <!-- Opções serão preenchidas dinamicamente -->
-            </select>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inserir Item no Leilão</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="card mx-auto" style="max-width: 600px">
+        <div class="card-body">
+          <h1 class="text-center">Inserir Item no Leilão</h1>
+          <form id="form-item">
+            <div class="form-group">
+              <label for="leilao_id">Leilão</label>
+              <select class="form-control" id="leilao_id" required>
+                <!-- Opções serão preenchidas dinamicamente -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="nome">Nome do Item</label>
+              <input type="text" class="form-control" id="nome" required />
+            </div>
+            <div class="form-group">
+              <label for="descricao">Descrição</label>
+              <textarea class="form-control" id="descricao" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="lance_inicial">Lance Inicial</label>
+              <input type="text" class="form-control" id="lance_inicial" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Inserir Item</button>
+          </form>
+          <div
+            id="itemAlert"
+            class="alert alert-danger mt-3 d-none"
+            role="alert"
+          ></div>
+          <div class="mt-5">
+            <h3 class="text-center">Itens Cadastrados</h3>
+            <ul class="list-group" id="lista-itens">
+              <!-- Itens serão preenchidos dinamicamente -->
+            </ul>
           </div>
-          <div class="form-group">
-            <label for="nome">Nome do Item</label>
-            <input type="text" class="form-control" id="nome" required />
+          <div class="text-center mt-3">
+            <button id="retornarLeilao" class="btn btn-secondary">
+              Retornar para Leilão
+            </button>
+            <button id="retornarPrincipal" class="btn btn-secondary">
+              Retornar para Tela Principal
+            </button>
           </div>
-          <div class="form-group">
-            <label for="descricao">Descrição</label>
-            <textarea class="form-control" id="descricao" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="lance_inicial">Lance Inicial</label>
-            <input type="number" class="form-control" id="lance_inicial" required />
-          </div>
-          <button type="submit" class="btn btn-primary">Inserir Item</button>
-        </form>
-        <div id="itemAlert" class="alert alert-danger mt-3 d-none" role="alert"></div>
-        <div class="mt-5">
-          <h3 class="text-center">Itens Cadastrados</h3>
-          <ul class="list-group" id="lista-itens">
-            <!-- Itens serão preenchidos dinamicamente -->
-          </ul>
+          <!-- Exibição da Hora Atual -->
+          <p class="text-center mt-5" id="horaAtual">Carregando...</p>
         </div>
-        <!-- Exibição da Hora Atual -->
-        <p class="text-center mt-5" id="horaAtual">Carregando...</p>
       </div>
     </div>
-  </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
       $(document).ready(function () {
-        // Preencher opções de leilões
+        // Aplicar máscara ao campo de lance inicial
+        $("#lance_inicial").mask("000.000.000.000.000,00", { reverse: true });
+
+        // Função para carregar leilões
         function carregarLeiloes() {
           $("#leilao_id").empty();
           $.get("/api/leiloes", function (data) {
-            console.log('Dados recebidos do servidor:', data);
+            console.log("Dados recebidos do servidor:", data);
             data.forEach(function (leilao) {
-              $("#leilao_id").append(new Option(`Leilão ${leilao.leilao_id}`, leilao.leilao_id));
+              $("#leilao_id").append(
+                new Option(`Leilão ${leilao.leilao_id}`, leilao.leilao_id)
+              );
             });
           }).fail(function (jqXHR) {
-            console.error('Erro ao carregar leilões:', jqXHR.responseText);
+            console.error("Erro ao carregar leilões:", jqXHR.responseText);
             alert("Erro ao carregar leilões: " + jqXHR.responseText);
           });
         }
 
-        // Listar itens cadastrados
+        // Função para listar itens
         function listarItens() {
           $("#lista-itens").empty();
           $.get("/api/itens", function (data) {
             data.forEach(function (item) {
               $("#lista-itens").append(`
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                ${item.nome}
+                ${item.nome} - Lance Inicial: R$${item.lance_inicial} - Último Lance: R$${item.ultimo_lance}
                 <span>
                   <button class="btn btn-warning btn-sm atualizar-item" data-id="${item.item_id}">Atualizar</button>
                   <button class="btn btn-danger btn-sm apagar-item" data-id="${item.item_id}">Apagar</button>
+                  <button class="btn btn-success btn-sm dar-lance" data-id="${item.item_id}">Dar Lance</button>
                 </span>
               </li>
             `);
@@ -94,7 +116,7 @@
             leilao_id: $("#leilao_id").val(),
             nome: $("#nome").val(),
             descricao: $("#descricao").val(),
-            lance_inicial: $("#lance_inicial").val(),
+            lance_inicial: $("#lance_inicial").val().replace(/\./g, '').replace(',', '.')
           };
           $.post("/api/itens", formData, function (data) {
             if (data.success) {
@@ -105,10 +127,10 @@
                 .removeClass("d-none")
                 .text("Erro ao inserir item: " + data.error);
             }
-          }).fail(function () {
+          }).fail(function (jqXHR) {
             $("#itemAlert")
               .removeClass("d-none")
-              .text("Erro ao processar o item");
+              .text("Erro ao processar o item: " + jqXHR.responseText);
           });
         });
 
@@ -127,7 +149,7 @@
               data: {
                 nome: novoNome,
                 descricao: novaDescricao,
-                lance_inicial: novoLanceInicial,
+                lance_inicial: novoLanceInicial.replace(/\./g, '').replace(',', '.')
               },
               success: function (data, status) {
                 if (status === "success") {
@@ -139,10 +161,12 @@
                     .text("Erro ao atualizar item: " + data.error);
                 }
               },
-              error: function () {
+              error: function (jqXHR) {
                 $("#itemAlert")
                   .removeClass("d-none")
-                  .text("Erro ao processar a atualização");
+                  .text(
+                    "Erro ao processar a atualização: " + jqXHR.responseText
+                  );
               },
             });
           }
@@ -165,13 +189,29 @@
                     .text("Erro ao apagar item: " + data.error);
                 }
               },
-              error: function () {
+              error: function (jqXHR) {
                 $("#itemAlert")
                   .removeClass("d-none")
-                  .text("Erro ao processar a exclusão");
+                  .text("Erro ao processar a exclusão: " + jqXHR.responseText);
               },
             });
           }
+        });
+
+        // Redirecionar para a página de dar lance
+        $("#lista-itens").on("click", ".dar-lance", function () {
+          const itemId = $(this).data("id");
+          window.location.href = `/dar-lance.html?item_id=${itemId}`;
+        });
+
+        // Retornar para Leilão
+        $("#retornarLeilao").on("click", function () {
+          window.location.href = "/criar-leilao.html";
+        });
+
+        // Retornar para Tela Principal
+        $("#retornarPrincipal").on("click", function () {
+          window.location.href = "/apresentacao.html";
         });
 
         // Exibir hora atual (apenas hora e minuto)

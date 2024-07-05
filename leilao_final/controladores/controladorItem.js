@@ -1,21 +1,40 @@
 const pool = require('../config/config');
 
+// exports.criarItem = async (req, res) => {
+//     const { leilao_id, usuario_id, nome, descricao, lance_inicial } = req.body;
+//     try {
+//         console.log('Tentando criar item:', req.body);
+//         const resultado = await pool.query('SELECT * FROM Itens WHERE nome = $1', [nome]);
+//         if (resultado.rows.length > 0) {
+//             console.log('Item com esse nome já existe');
+//             return res.status(400).json({ error: 'Item com esse nome já existe' });
+//         }
+//         await pool.query(
+//             'INSERT INTO Itens (leilao_id, usuario_id, nome, descricao, lance_inicial) VALUES ($1, $2, $3, $4, $5)',
+//             [leilao_id, usuario_id, nome, descricao, lance_inicial]
+//         );
+//         res.status(201).json({ success: true });
+//     } catch (err) {
+//         console.error('Erro ao criar item:', err);
+//         res.status(500).json({ error: err.message });
+//     }
+// };
 exports.criarItem = async (req, res) => {
     const { leilao_id, nome, descricao, lance_inicial } = req.body;
+    const usuario_id = req.user ? req.user.id : null; // Ajuste aqui para obter o usuário logado, se necessário
+  
     try {
-        const resultado = await pool.query('SELECT * FROM Itens WHERE nome = $1', [nome]);
-        if (resultado.rows.length > 0) {
-            return res.status(400).json({ error: 'Item com esse nome já existe' });
-        }
-        await pool.query(
-            'INSERT INTO Itens (leilao_id, nome, descricao, lance_inicial) VALUES ($1, $2, $3, $4)',
-            [leilao_id, nome, descricao, lance_inicial]
-        );
-        res.status(201).json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+      const resultado = await pool.query(
+        `INSERT INTO itens (leilao_id, usuario_id, nome, descricao, lance_inicial)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING *`,
+        [leilao_id, usuario_id, nome, descricao, lance_inicial]
+      );
+      res.status(201).json({ success: true, item: resultado.rows[0] });
+    } catch (error) {
+      res.status(500).json({ success: false, error: error.message });
     }
-};
+  };
 
 exports.listarItens = async (req, res) => {
     try {
